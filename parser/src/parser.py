@@ -1,22 +1,17 @@
 import json, re
-from uuid import uuid4
 
 from bs4 import BeautifulSoup
 from matricula import Matricula
+from mongo import Mongo
 
-# list(filter(None, '/test/asd/123/'.split('/')))
 
 class Parser:
 
-    __countries: list = list()
-
     def __init__(self):
         self.__matricula = Matricula()
-        self.__countries = self.__parse_countries()
-        print(json.dumps(self.__countries, indent=4))
+        self.__mongo = Mongo()
 
-    def get_countries(self) -> list:
-        return self.__countries
+        self.__parse_countries()
 
     def __parse_countries(self) -> list:
         b_s = BeautifulSoup(
@@ -36,12 +31,17 @@ class Parser:
         for element in elements:
             element.span.decompose()
 
-            countries.append({
-                'id': str(uuid4()),
+            country = {
+                'id': list(filter(None, element['href'].split('/')))[1],
                 'name': element.text.strip(),
-                'link': element['href'],
-                'dioceses': self.__parse_dioceses(element['href'])
-            })
+                'link': element['href']
+            }
+
+            countries.append(country)
+            self.__mongo.upsert_country(country)
+
+        for country in countries:
+            self.__parse_dioceses(country['link'])
         
         return countries
 
@@ -63,12 +63,18 @@ class Parser:
         for element in elements:
             element.span.decompose()
 
-            dioceses.append({
-                'id': str(uuid4()),
+            diocese = {
+                'id': list(filter(None, element['href'].split('/')))[2],
+                'country': list(filter(None, element['href'].split('/')))[1],
                 'name': element.text.strip(),
-                'link': element['href'],
-                'communities': self.__parse_communities(element['href'])
-            })
+                'link': element['href']
+            }
+
+            dioceses.append(diocese)
+            self.__mongo.upsert_diocese(diocese)
+
+        for diocese in dioceses:
+            self.__parse_communities(diocese['link'])
         
         return dioceses
 
@@ -90,12 +96,19 @@ class Parser:
         for element in elements:
             element.span.decompose()
 
-            communities.append({
-                'id': str(uuid4()),
+            community = {
+                'id': list(filter(None, element['href'].split('/')))[3],
+                'country': list(filter(None, element['href'].split('/')))[1],
+                'diocese': list(filter(None, element['href'].split('/')))[2],
                 'name': element.text.strip(),
-                'link': element['href'],
-                'church_books': self.__parse_church_books(element['href'])
-            })
+                'link': element['href']
+            }
+
+            communities.append(community)
+            self.__mongo.upsert_community(community)
+
+        for community in communities:
+            self.__parse_church_books(community['link'])
         
         return communities
 
@@ -113,15 +126,22 @@ class Parser:
 
         for element in elements[1:]:
             if not element.attrs.get('class', None) and not element.td.a['href'].startswith('#'):
-                print(community_url)
-                church_books.append({
-                    'id': str(uuid4()),
-                    'signature': element.select('td')[1].text.strip(),
+                church_book = {
+                    'id': list(filter(None, element.td.a['href'].split('/')))[4],
+                    'country': list(filter(None, element.td.a['href'].split('/')))[1],
+                    'diocese': list(filter(None, element.td.a['href'].split('/')))[2],
+                    'community': list(filter(None, element.td.a['href'].split('/')))[3],
+                    'label': element.select('td')[1].text.strip(),
                     'matriculation_type': element.select('td')[2].text.strip(),
                     'period': element.select('td')[3].text.strip(),
-                    'link': element.td.a['href'],
-                    'pages': self.__parse_pages(element.td.a['href'])
-                })
+                    'link': element.td.a['href']
+                }
+
+                church_books.append(church_book)
+                self.__mongo.upsert_church_book(church_book)
+
+        for church_book in church_books:
+            self.__parse_pages(church_book['link'])
 
         paginator = b_s.find(
             'ul',
@@ -139,9 +159,7 @@ class Parser:
             )[-1]
 
             if 'fa-chevron-right' in last.span.attrs['class']:
-                church_books.extend(
-                    self.__parse_church_books(community_url, page + 1)
-                )
+                self.__parse_church_books(community_url, page + 1)
 
         return church_books
 
@@ -159,7 +177,7 @@ class Parser:
             )
         )
 
-        files = json.loads(
+        links = json.loads(
             re.search(
                 '"files": .*]',
                 pages
@@ -170,15 +188,32 @@ class Parser:
             )
         )
 
-        # TODO: include base url of image server
+        base_url = re.search(
+            '"path": .*"',
+            pages
+        )[0].replace(
+            '"path": "',
+            ''
+        ).replace(
+            '"',
+            ''
+        )
 
         pages = list()
 
-        for label, link in zip(labels, files):
-            pages.append({
-                'id': str(uuid4()),
+        for label, link in zip(labels, links):
+            page = {
+                'id': label,
+                'country': list(filter(None, church_book_url.split('/')))[1],
+                'diocese': list(filter(None, church_book_url.split('/')))[2],
+                'community': list(filter(None, church_book_url.split('/')))[3],
+                'church_book': list(filter(None, church_book_url.split('/')))[4],
                 'label': label,
-                'link': link
-            })
+                'comment': '',
+                'link': f'{base_url}{link}'
+            }
+
+            pages.append(page)
+            self.__mongo.upsert_page(page)
 
         return pages

@@ -1,5 +1,6 @@
 import requests
 
+
 class Matricula:
 
     __base_url = 'https://data.matricula-online.eu'
@@ -15,4 +16,5 @@ class Matricula:
         return self.session.get(f'{self.__base_url}{relative_url}').text
 
     # def get_csrf_link(self, url) -> str:
-    #     return f'{url}'
+    #     print(self.session.cookies.get('shared_csrftoken'))
+    #     return f'{url}?csrf={self.session.cookies.get("shared_csrftoken")}'
