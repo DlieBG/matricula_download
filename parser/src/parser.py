@@ -29,11 +29,13 @@ class Parser:
         countries = list()
 
         for element in elements:
+            count = int(element.span.text)
             element.span.decompose()
 
             country = {
                 'id': list(filter(None, element['href'].split('/')))[1],
                 'name': element.text.strip(),
+                'community_count': count,
                 'link': element['href']
             }
 
@@ -61,12 +63,14 @@ class Parser:
         dioceses = list()
 
         for element in elements:
+            count = int(element.span.text)
             element.span.decompose()
 
             diocese = {
                 'id': list(filter(None, element['href'].split('/')))[2],
                 'country': list(filter(None, element['href'].split('/')))[1],
                 'name': element.text.strip(),
+                'community_count': count,
                 'link': element['href']
             }
 
