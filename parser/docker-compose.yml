@@ -4,5 +4,5 @@ services:
   parser:
     image: ghcr.io/dliebg/matricula_download/parser:main
     container_name: matricula_download_parser
-    restart: unless-stopped
+    restart: no
     env_file: .env
