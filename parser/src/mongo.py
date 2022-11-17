@@ -18,25 +18,25 @@ class Mongo:
         self.__client['matricula_download']['country'].create_index([
             ('id', HASHED)
         ], name="country_index")
-        
+
         self.__client['matricula_download']['diocese'].create_index([
             ('id', HASHED),
             ('country', 1)
         ], name="diocese_index")
-        
+
         self.__client['matricula_download']['community'].create_index([
             ('id', HASHED),
             ('country', 1),
             ('diocese', 1)
         ], name="community_index")
-        
+
         self.__client['matricula_download']['church_book'].create_index([
             ('id', HASHED),
             ('country', 1),
             ('diocese', 1),
             ('community', 1)
         ], name="church_book_index")
-        
+
         self.__client['matricula_download']['page'].create_index([
             ('id', HASHED),
             ('country', 1),
