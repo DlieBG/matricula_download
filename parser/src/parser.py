@@ -44,7 +44,7 @@ class Parser:
 
         for country in countries:
             self.__parse_dioceses(country['link'])
-        
+
         return countries
 
     def __parse_dioceses(self, country_url: str) -> list:
@@ -79,7 +79,7 @@ class Parser:
 
         for diocese in dioceses:
             self.__parse_communities(diocese['link'])
-        
+
         return dioceses
 
     def __parse_communities(self, diocese_url: str) -> list:
@@ -113,7 +113,7 @@ class Parser:
 
         for community in communities:
             self.__parse_church_books(community['link'])
-        
+
         return communities
 
     def __parse_church_books(self, community_url: str, page: int = 1) -> list:
@@ -138,6 +138,7 @@ class Parser:
                     'label': element.select('td')[1].text.strip(),
                     'matriculation_type': element.select('td')[2].text.strip(),
                     'period': element.select('td')[3].text.strip(),
+                    'complete': True if element.td.button else False,
                     'link': element.td.a['href']
                 }
 
