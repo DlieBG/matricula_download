@@ -213,7 +213,6 @@ class Parser:
                 'community': list(filter(None, church_book_url.split('/')))[3],
                 'church_book': list(filter(None, church_book_url.split('/')))[4],
                 'label': label,
-                'comment': '',
                 'link': f'{base_url}{link}'
             }
 
