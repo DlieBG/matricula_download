@@ -7,13 +7,23 @@ from mongo import Mongo
 
 class Parser:
 
-    def __init__(self):
+    def __init__(self,
+        country_regex: str = '.*',
+        diocese_regex: str = '.*',
+        community_regex: str = '.*'
+    ):
+        self.__country_regex = country_regex
+        self.__diocese_regex = diocese_regex
+        self.__community_regex = community_regex
+
         self.__matricula = Matricula()
         self.__mongo = Mongo()
 
         self.__parse_countries()
+        
+        self.__mongo.close()
 
-    def __parse_countries(self) -> list:
+    def __parse_countries(self):
         b_s = BeautifulSoup(
             self.__matricula.get_html('/de/bestande'),
             'html.parser'
@@ -21,7 +31,7 @@ class Parser:
 
         elements = b_s.find_all(
             'a',
-            attrs={ 
+            attrs={
                 'class': 'list-group-item list-group-item-info list-group-item-action'
             }
         )
@@ -43,11 +53,16 @@ class Parser:
             self.__mongo.upsert_country(country)
 
         for country in countries:
-            self.__parse_dioceses(country['link'])
+            match = re.search(
+                self.__country_regex,
+                country['id']
+            )
 
-        return countries
+            if match[0] if match else None is country['id']:
+                print('Match country', country['name'])
+                self.__parse_dioceses(country['link'])
 
-    def __parse_dioceses(self, country_url: str) -> list:
+    def __parse_dioceses(self, country_url: str):
         b_s = BeautifulSoup(
             self.__matricula.get_html(country_url),
             'html.parser'
@@ -55,7 +70,7 @@ class Parser:
 
         elements = b_s.find_all(
             'a',
-            attrs={ 
+            attrs={
                 'class': 'list-group-item list-group-item-info list-group-item-action'
             }
         )
@@ -78,11 +93,16 @@ class Parser:
             self.__mongo.upsert_diocese(diocese)
 
         for diocese in dioceses:
-            self.__parse_communities(diocese['link'])
+            match = re.search(
+                self.__diocese_regex,
+                diocese['id']
+            )
 
-        return dioceses
+            if match[0] if match else None is diocese['id']:
+                print('Match diocese', diocese['name'])
+                self.__parse_communities(diocese['link'])
 
-    def __parse_communities(self, diocese_url: str) -> list:
+    def __parse_communities(self, diocese_url: str):
         b_s = BeautifulSoup(
             self.__matricula.get_html(diocese_url),
             'html.parser'
@@ -90,7 +110,7 @@ class Parser:
 
         elements = b_s.find_all(
             'a',
-            attrs={ 
+            attrs={
                 'class': 'list-group-item list-group-item-info list-group-item-action'
             }
         )
@@ -112,11 +132,16 @@ class Parser:
             self.__mongo.upsert_community(community)
 
         for community in communities:
-            self.__parse_church_books(community['link'])
+            match = re.search(
+                self.__community_regex,
+                community['id']
+            )
 
-        return communities
+            if match[0] if match else None is community['id']:
+                print('Match community', community['name'])
+                self.__parse_church_books(community['link'])
 
-    def __parse_church_books(self, community_url: str, page: int = 1) -> list:
+    def __parse_church_books(self, community_url: str, page: int = 1):
         b_s = BeautifulSoup(
             self.__matricula.get_html(f'{community_url}?page={page}'),
             'html.parser'
@@ -129,7 +154,7 @@ class Parser:
         church_books = list()
 
         for element in elements[1:]:
-            if not element.attrs.get('class', None) and not element.td.a['href'].startswith('#'):
+            if not element.attrs.get('class', None) and not element.td.a['href'].startswith(('#', 'http://', 'https://')):
                 church_book = {
                     'id': list(filter(None, element.td.a['href'].split('/')))[4],
                     'country': list(filter(None, element.td.a['href'].split('/')))[1],
@@ -166,9 +191,7 @@ class Parser:
             if 'fa-chevron-right' in last.span.attrs['class']:
                 self.__parse_church_books(community_url, page + 1)
 
-        return church_books
-
-    def __parse_pages(self, church_book_url: str) -> list:
+    def __parse_pages(self, church_book_url: str):
         pages = self.__matricula.get_html(f'{church_book_url}')
 
         labels = json.loads(
@@ -214,11 +237,8 @@ class Parser:
                 'community': list(filter(None, church_book_url.split('/')))[3],
                 'church_book': list(filter(None, church_book_url.split('/')))[4],
                 'label': label,
-                'comment': '',
                 'link': f'{base_url}{link}'
             }
 
             pages.append(page)
             self.__mongo.upsert_page(page)
-
-        return pages

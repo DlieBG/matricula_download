@@ -1,7 +1,8 @@
-import os
+import os, datetime
 
 from dotenv import find_dotenv, load_dotenv
 from pymongo import MongoClient, HASHED
+from bson import ObjectId
 
 
 class Mongo:
@@ -13,8 +14,15 @@ class Mongo:
 
         self.__client = MongoClient(os.getenv("MONGO_URI"))
         self.__create_indexes()
+        self.__create_job()
 
     def __create_indexes(self):
+        self.__client['matricula_download']['parser_job'].create_index([
+            ('queued', 1),
+            ('started', 1),
+            ('finished', 1)
+        ], name="parser_job_index")
+
         self.__client['matricula_download']['country'].create_index([
             ('id', HASHED)
         ], name="country_index")
@@ -44,6 +52,53 @@ class Mongo:
             ('community', 1),
             ('church_book', 1)
         ], name="page_index")
+
+    def __create_job(self):
+        if not self.__client['matricula_download']['parser_job'].find_one():
+            self.__client['matricula_download']['parser_job'].insert_one({
+                'queued': datetime.datetime.now(),
+                'started': None,
+                'finished': None,
+                'country_regex': 'deutschland',
+                'diocese_regex': 'muenster',
+                'community_regex': 'borken-st-remigius'
+            })
+
+    def close(self):
+        self.__client.close()
+
+    def get_job(self):
+        return self.__client['matricula_download']['parser_job'].find_one(
+            {
+                'started': None,
+                'finished': None
+            },
+            sort=[('queued', 1)]
+        )
+
+    def start_job(self, _id: ObjectId):
+        self.__client['matricula_download']['parser_job'].update_one(
+            {
+                '_id': _id
+            },
+            {
+                '$set': {
+                    'started': datetime.datetime.now()
+                }
+            }
+        )
+
+    def finish_job(self, _id: ObjectId):
+        self.__client['matricula_download']['parser_job'].update_one(
+            {
+                '_id': _id
+            },
+            {
+                '$set': {
+                    'finished': datetime.datetime.now()
+                }
+            }
+        )
 
     def upsert_country(self, country):
         self.__client['matricula_download']['country'].update_one(
@@ -105,7 +160,16 @@ class Mongo:
                     'church_book': page['church_book']
                 },
                 {
-                    '$set': page
+                    '$set': page,
+                    '$setOnInsert': {
+                        'comment': None,
+                        's3': {
+                            'queued': None,
+                            'started': None,
+                            'finished': None,
+                            'extension': None
+                        }
+                    }
                 },
                 upsert=True
             )
