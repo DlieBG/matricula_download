@@ -6,9 +6,20 @@ services:
     container_name: matricula_download_db
     restart: unless-stopped
     volumes:
-      - matricula_download_db_volume:/data/db
+      - ./db:/data/db
     ports:
       - 27017:27017
+    env_file: .env
+    command: mongod
 
-volumes:
-  matricula_download_db_volume:
+  s3:
+    image: minio/minio
+    container_name: matricula_download_s3
+    restart: unless-stopped
+    volumes:
+      - ./s3:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    env_file: .env
+    command: server /data --console-adress ":9001"
