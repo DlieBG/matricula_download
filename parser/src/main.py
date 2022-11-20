@@ -18,7 +18,8 @@ while True:
             Parser(
                 country_regex=job.get('country_regex', '.*'),
                 diocese_regex=job.get('diocese_regex', '.*'),
-                community_regex=job.get('community_regex', '.*')
+                community_regex=job.get('community_regex', '.*'),
+                page_skip=job.get('page_skip', False)
             )
 
             mongo.finish_job(job['_id'])

@@ -10,11 +10,13 @@ class Parser:
     def __init__(self,
         country_regex: str = '.*',
         diocese_regex: str = '.*',
-        community_regex: str = '.*'
+        community_regex: str = '.*',
+        page_skip: bool = False
     ):
         self.__country_regex = country_regex
         self.__diocese_regex = diocese_regex
         self.__community_regex = community_regex
+        self.__page_skip = page_skip
 
         self.__matricula = Matricula()
         self.__mongo = Mongo()
@@ -171,7 +173,8 @@ class Parser:
                 self.__mongo.upsert_church_book(church_book)
 
         for church_book in church_books:
-            self.__parse_pages(church_book['link'])
+            if not self.__page_skip:
+                self.__parse_pages(church_book['link'])
 
         paginator = b_s.find(
             'ul',
