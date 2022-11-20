@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: mongo
+    image: mongo:4.4
     container_name: matricula_download_db
     restart: unless-stopped
     volumes:
