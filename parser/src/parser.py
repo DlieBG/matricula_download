@@ -232,7 +232,7 @@ class Parser:
 
         pages = list()
 
-        for label, link in zip(labels, links):
+        for count, (label, link) in enumerate(zip(labels, links), start=1):
             page = {
                 'id': label,
                 'country': list(filter(None, church_book_url.split('/')))[1],
@@ -240,7 +240,8 @@ class Parser:
                 'community': list(filter(None, church_book_url.split('/')))[3],
                 'church_book': list(filter(None, church_book_url.split('/')))[4],
                 'label': label,
-                'link': f'{base_url}{link}'
+                'link': f'{church_book_url}?pg={count}',
+                'img': f'{base_url}{link}',
             }
 
             pages.append(page)

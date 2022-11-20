@@ -26,7 +26,7 @@ while True:
         else:
             time.sleep(30)
     except Exception:
-        mongo.error_job(job['id'], traceback.format_exc())
+        mongo.error_job(job['_id'], traceback.format_exc())
         break
 
 mongo.close()
