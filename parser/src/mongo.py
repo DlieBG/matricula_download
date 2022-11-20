@@ -59,6 +59,8 @@ class Mongo:
                 'queued': datetime.datetime.now(),
                 'started': None,
                 'finished': None,
+                'errored': None,
+                'error': None,
                 'country_regex': 'deutschland',
                 'diocese_regex': 'muenster',
                 'community_regex': 'borken-st-remigius'
@@ -185,6 +187,8 @@ class Mongo:
                             'queued': None,
                             'started': None,
                             'finished': None,
+                            'errored': None,
+                            'error': None,
                             'extension': None
                         }
                     }
