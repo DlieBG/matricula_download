@@ -83,7 +83,10 @@ class Mongo:
             },
             {
                 '$set': {
-                    'started': datetime.datetime.now()
+                    'started': datetime.datetime.now(),
+                    'finished': None,
+                    'errored': None,
+                    'error': None
                 }
             }
         )
@@ -95,7 +98,22 @@ class Mongo:
             },
             {
                 '$set': {
-                    'finished': datetime.datetime.now()
+                    'finished': datetime.datetime.now(),
+                    'errored': None,
+                    'error': None
+                }
+            }
+        )
+
+    def error_job(self, _id: ObjectId, exception: str):
+        self.__client['matricula_download']['parser_job'].update_one(
+            {
+                '_id': _id
+            },
+            {
+                '$set': {
+                    'errored': datetime.datetime.now(),
+                    'error': exception
                 }
             }
         )
