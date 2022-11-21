@@ -19,8 +19,8 @@ RUN sudo mkdir tmp
 RUN sudo chmod 777 tmp
 
 COPY src/main.py .
-COPY src/parser.py .
-COPY src/matricula.py .
+COPY src/downloader.py .
 COPY src/mongo.py .
+COPY src/s3.py .
 
 CMD [ "python3", "-u", "main.py" ]
