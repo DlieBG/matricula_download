@@ -63,7 +63,8 @@ class Mongo:
                 'error': None,
                 'country_regex': 'deutschland',
                 'diocese_regex': 'muenster',
-                'community_regex': 'borken-st-remigius'
+                'community_regex': 'borken-st-remigius',
+                'page_skip': False
             })
 
     def close(self):
@@ -114,6 +115,7 @@ class Mongo:
             },
             {
                 '$set': {
+                    'finished': None,
                     'errored': datetime.datetime.now(),
                     'error': exception
                 }
@@ -188,8 +190,7 @@ class Mongo:
                             'started': None,
                             'finished': None,
                             'errored': None,
-                            'error': None,
-                            'extension': None
+                            'error': None
                         }
                     }
                 },
