@@ -115,6 +115,7 @@ class Mongo:
             },
             {
                 '$set': {
+                    'finished': None,
                     'errored': datetime.datetime.now(),
                     'error': exception
                 }
@@ -189,8 +190,7 @@ class Mongo:
                             'started': None,
                             'finished': None,
                             'errored': None,
-                            'error': None,
-                            'extension': None
+                            'error': None
                         }
                     }
                 },

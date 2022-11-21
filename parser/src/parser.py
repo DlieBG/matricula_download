@@ -8,10 +8,10 @@ from mongo import Mongo
 class Parser:
 
     def __init__(self,
-        country_regex: str = '.*',
-        diocese_regex: str = '.*',
-        community_regex: str = '.*',
-        page_skip: bool = False
+        country_regex: str,
+        diocese_regex: str,
+        community_regex: str,
+        page_skip: bool
     ):
         self.__country_regex = country_regex
         self.__diocese_regex = diocese_regex
