@@ -2,3 +2,4 @@ python-dotenv
 pymongo
 selenium
 minio
+requests
