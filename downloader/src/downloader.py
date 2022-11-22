@@ -31,6 +31,8 @@ class Downloader:
 
     def __get_full_link(self, link: str) -> tuple:
         options = Options()
+        options.add_argument('--no-sandbox') 
+        options.add_argument('--disable-gpu')
         options.headless = True
 
         capabilities = DesiredCapabilities.CHROME
