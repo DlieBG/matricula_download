@@ -4,5 +4,6 @@ services:
   downloader:
     image: ghcr.io/dliebg/matricula_download/downloader:main
     container_name: matricula_download_downloader
+    shm_size: '4gb'
     restart: unless-stopped
     env_file: .env
