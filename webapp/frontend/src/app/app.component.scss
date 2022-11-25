@@ -1,7 +1,17 @@
-div {
-    margin: 1em;
+.toolbar {
+    background-color: brown;
 }
 
-h1 {
-    font-weight: 400;
+button {
+    margin-right: .5em;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.footer {
+    position: fixed;
+    bottom: 6px;
+    right: 12px;
 }
