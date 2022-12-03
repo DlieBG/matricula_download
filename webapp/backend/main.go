@@ -4,6 +4,7 @@ import (
 	"benedikt-schwering.de/matricula_download/v2/controllers"
 	"benedikt-schwering.de/matricula_download/v2/services"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -18,6 +19,10 @@ func main() {
 	services.ConnectMinio()
 
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+	}))
 
 	controllers.RegisterParserJobRoutes(app)
 	controllers.RegisterCountryRoutes(app)

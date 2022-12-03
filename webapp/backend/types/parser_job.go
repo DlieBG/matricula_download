@@ -16,7 +16,7 @@ type ParserJob struct {
 }
 
 type CreateParserJob struct {
-	Queued         primitive.DateTime `bson:"queued" json:"queued,omitempty"`
+	Queued         primitive.DateTime `bson:"queued" json:"queued"`
 	CountryRegex   string             `bson:"country_regex" json:"country_regex"`
 	DioceseRegex   string             `bson:"diocese_regex" json:"diocese_regex"`
 	CommunityRegex string             `bson:"community_regex" json:"community_regex"`

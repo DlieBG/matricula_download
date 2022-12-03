@@ -38,6 +38,23 @@ func GetPages(c *fiber.Ctx) error {
 		return nil
 	}
 
+	for index, result := range results {
+		if result.S3.Finished != 0 {
+			presignedUrl, err := services.GetMinioClient().PresignedGetObject(
+				context.TODO(),
+				"matricula-download",
+				fmt.Sprintf("%s/%s/%s/%s/%s.jpg", result.CountryId, result.DioceseId, result.CommunityId, result.ChurchBookId, result.PageId),
+				20*time.Minute,
+				nil,
+			)
+			if err != nil {
+				return err
+			}
+
+			results[index].S3.PresignedUrl = fmt.Sprint(presignedUrl)
+		}
+	}
+
 	return c.JSON(results)
 }
 

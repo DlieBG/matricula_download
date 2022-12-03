@@ -1,0 +1,153 @@
+<div class="body">
+    <h1>
+        Parser
+        <button mat-stroked-button (click)="createParserJob()">
+            <mat-icon>add</mat-icon>
+            Erstellen
+        </button>
+    </h1>
+
+    <ng-template #loader>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </ng-template>
+
+    <div *ngIf="parserJobs$ | async as parserJobs; else loader;">
+        <table mat-table [dataSource]="parserJobs">
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="status">
+                        <mat-icon class="queued" matTooltip="Erstellt" *ngIf="element.queued && !element.started">hourglass_empty</mat-icon>
+                        <mat-icon class="started" matTooltip="Gestartet" *ngIf="element.started && !element.finished && !element.errored">downloading</mat-icon>
+                        <mat-icon class="finished" matTooltip="Beendet" *ngIf="element.finished">check_circle</mat-icon>
+                        <mat-icon class="errored" matTooltip="Fehler" *ngIf="element.errored">error</mat-icon>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="time">
+                <th mat-header-cell *matHeaderCellDef>Zeiten</th>
+                <td mat-cell *matCellDef="let element">
+                    <table>
+                        <tr>
+                            <td>
+                                Erstellt:
+                            </td>
+                            <td>
+                                {{ element.queued | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Gestartet:
+                            </td>
+                            <td *ngIf="element.started; else empty;">
+                                {{ element.started | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                            <ng-template #empty>
+                                <td>
+                                    -
+                                </td>
+                            </ng-template>
+                        </tr>
+                        <tr>
+                            <td>
+                                Beendet:
+                            </td>
+                            <td *ngIf="element.finished; else empty;">
+                                {{ element.finished | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                            <ng-template #empty>
+                                <td>
+                                    -
+                                </td>
+                            </ng-template>
+                        </tr>
+                        <tr *ngIf="element.errored">
+                            <td>
+                                Fehler:
+                            </td>
+                            <td>
+                                {{ element.errored | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="error">
+                <th mat-header-cell *matHeaderCellDef>Fehler</th>
+                <td mat-cell *matCellDef="let element">
+                    <pre *ngIf="element.error; else empty;">{{ element.error }}</pre>
+                    <ng-template #empty>-</ng-template>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="regex">
+                <th mat-header-cell *matHeaderCellDef>Regex</th>
+                <td mat-cell *matCellDef="let element">
+                    <table>
+                        <tr>
+                            <td>
+                                Country Regex:
+                            </td>
+                            <td>
+                                {{ element.country_regex }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Diocese Regex:
+                            </td>
+                            <td>
+                                {{ element.diocese_regex }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Community Regex:
+                            </td>
+                            <td>
+                                {{ element.community_regex }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="page_skip">
+                <th mat-header-cell *matHeaderCellDef>Seiten überspringen</th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="page-skip">
+                        <mat-icon matTooltip="Seiten überspringen" *ngIf="element.page_skip">check</mat-icon>
+                        <mat-icon matTooltip="Seiten einschließen" *ngIf="!element.page_skip">close</mat-icon>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="action">
+                        <button mat-icon-button matTooltip="Liste aktualisieren" (click)="getParserJobs()">
+                            <mat-icon>refresh</mat-icon>
+                        </button>
+                    </div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="action">
+                        <button mat-icon-button matTooltip="Parser Job löschen" (click)="deleteParserJob(element)" *ngIf="element.finished || element.errored">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+
+                        <button mat-icon-button matTooltip="Parser Job klonen" (click)="createParserJob(element)">
+                            <mat-icon>open_in_new</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+</div>
