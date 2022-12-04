@@ -1,0 +1,39 @@
+<div class="body">
+    <h2>Countries</h2>
+
+    <ng-template #loading>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </ng-template>
+
+    <div *ngIf="countries$ | async as countries; else loading;">
+        <table mat-table [dataSource]="countries">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef>Communities</th>
+                <td mat-cell *matCellDef="let element">{{ element.community_count }}</td>
+            </ng-container>
+            
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="action">
+                        <button mat-icon-button matTooltip="Parser Job erstellen" (click)="createParserJob(element)">
+                            <mat-icon>code</mat-icon>
+                        </button>
+
+                        <button mat-icon-button matTooltip="Country auswählen" [routerLink]="element.id">
+                            <mat-icon>arrow_forward_ios</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+</div>

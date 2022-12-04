@@ -7,11 +7,11 @@
         </button>
     </h1>
 
-    <ng-template #loader>
+    <ng-template #loading>
         <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
     </ng-template>
 
-    <div *ngIf="parserJobs$ | async as parserJobs; else loader;">
+    <div *ngIf="parserJobs$ | async as parserJobs; else loading;">
         <table mat-table [dataSource]="parserJobs">
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef>Status</th>

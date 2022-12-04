@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,16 @@ import { ExplorerComponent } from './components/explorer/explorer.component';
 import { ParserComponent } from './components/parser/parser.component';
 import { ListDownloaderComponent } from './components/list-downloader/list-downloader.component';
 import { CreateParserJobComponent } from './components/parser/create-parser-job/create-parser-job.component';
+import { CountryListComponent } from './components/explorer/country-list/country-list.component';
+import { CountryComponent } from './components/explorer/country/country.component';
+import { DioceseListComponent } from './components/explorer/diocese-list/diocese-list.component';
+import { DioceseComponent } from './components/explorer/diocese/diocese.component';
+import { CommunityListComponent } from './components/explorer/community-list/community-list.component';
+import { CommunityComponent } from './components/explorer/community/community.component';
+import { ChurchBookListComponent } from './components/explorer/church-book-list/church-book-list.component';
+import { ChurchBookComponent } from './components/explorer/church-book/church-book.component';
+import { PageListComponent } from './components/explorer/page-list/page-list.component';
+import { PagePreviewComponent } from './components/explorer/page-preview/page-preview.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +41,16 @@ import { CreateParserJobComponent } from './components/parser/create-parser-job/
     ParserComponent,
     ListDownloaderComponent,
     CreateParserJobComponent,
+    CountryListComponent,
+    CountryComponent,
+    DioceseListComponent,
+    DioceseComponent,
+    CommunityListComponent,
+    CommunityComponent,
+    ChurchBookListComponent,
+    ChurchBookComponent,
+    PageListComponent,
+    PagePreviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +67,7 @@ import { CreateParserJobComponent } from './components/parser/create-parser-job/
     MatTooltipModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

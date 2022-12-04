@@ -10,7 +10,11 @@ h1 button {
     float: right;
 }
 
-.status, .page-skip, .action {
+.status, .page-skip {
     display: flex;
     justify-content: center;
+}
+
+.action {
+    float: right;
 }

@@ -1,0 +1,20 @@
+.body {
+    margin: 1em;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+.info {
+    border: 1px solid grey;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1em;
+}
+
+td {
+    padding-right: 1em;
+}

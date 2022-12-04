@@ -197,38 +197,43 @@ class Parser:
     def __parse_pages(self, church_book_url: str):
         pages = self.__matricula.get_html(f'{church_book_url}')
 
-        labels = json.loads(
-            re.search(
-                '"labels": .*]',
+        try:
+            labels = json.loads(
+                re.search(
+                    '"labels": .*]',
+                    pages
+                )[0]
+                .replace(
+                    '"labels": ',
+                    ''
+                )
+            )
+
+            links = json.loads(
+                re.search(
+                    '"files": .*]',
+                    pages
+                )[0]
+                .replace(
+                    '"files": ',
+                    ''
+                )
+            )
+
+            base_url = re.search(
+                '"path": .*"',
                 pages
-            )[0]
-            .replace(
-                '"labels": ',
+            )[0].replace(
+                '"path": "',
+                ''
+            ).replace(
+                '"',
                 ''
             )
-        )
-
-        links = json.loads(
-            re.search(
-                '"files": .*]',
-                pages
-            )[0]
-            .replace(
-                '"files": ',
-                ''
-            )
-        )
-
-        base_url = re.search(
-            '"path": .*"',
-            pages
-        )[0].replace(
-            '"path": "',
-            ''
-        ).replace(
-            '"',
-            ''
-        )
+        except:
+            labels = list()
+            links = list()
+            base_url = ''
 
         pages = list()
 
