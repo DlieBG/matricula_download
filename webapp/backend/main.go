@@ -9,9 +9,7 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		panic("No .env found")
-	}
+	godotenv.Load()
 
 	services.ConnectMongo()
 	defer services.DisconnectMongo()
