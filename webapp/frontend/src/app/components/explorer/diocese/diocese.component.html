@@ -1,0 +1,80 @@
+<div class="body">
+    <ng-template #loading>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </ng-template>
+
+    <div *ngIf="{
+            country: country$ | async,
+            diocese: diocese$ | async
+        } as data; else loading;">
+        <h1>
+            <button mat-icon-button [routerLink]="['/explorer', data.country.id]" *ngIf="data.country">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            Diocese
+            <i *ngIf="data.diocese">
+                {{ data.diocese.name }}
+            </i>
+        </h1>
+
+        <div class="info">
+            <table>
+                <tr>
+                    <td>
+                        Country:
+                    </td>
+                    <td *ngIf="data.country">
+                        {{ data.country.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Diocese:
+                    </td>
+                    <td *ngIf="data.diocese">
+                        {{ data.diocese.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Communities:
+                    </td>
+                    <td *ngIf="data.diocese">
+                        {{ data.diocese.community_count }}
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <td>
+                        Country Id:
+                    </td>
+                    <td *ngIf="data.country">
+                        {{ data.country.id }}
+                    </td>
+                    <td>
+                        <button mat-icon-button [routerLink]="['/explorer', data.country.id]" *ngIf="data.country">
+                            <mat-icon>open_in_new</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Diocese Id:
+                    </td>
+                    <td *ngIf="data.diocese">
+                        {{ data.diocese.id }}
+                    </td>
+                    <td>
+                        <button mat-icon-button disabled [routerLink]="['/explorer', data.country.id, data.diocese.id]" *ngIf="data.country && data.diocese">
+                            <mat-icon>open_in_new</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <app-community-list [country]="data.country" [diocese]="data.diocese" *ngIf="data.country && data.diocese"></app-community-list>
+    </div>
+</div>

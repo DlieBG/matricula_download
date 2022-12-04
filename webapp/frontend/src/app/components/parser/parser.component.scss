@@ -1,0 +1,20 @@
+.body {
+    margin: 1em;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+h1 button {
+    float: right;
+}
+
+.status, .page-skip {
+    display: flex;
+    justify-content: center;
+}
+
+.action {
+    float: right;
+}

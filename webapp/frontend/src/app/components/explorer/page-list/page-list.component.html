@@ -1,0 +1,133 @@
+<div class="body">
+    <h2>Pages</h2>
+
+    <ng-template #loading>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </ng-template>
+
+    <div *ngIf="pages$ | async as pages; else loading;">
+        <table mat-table [dataSource]="pages" *ngIf="pages.length > 0">
+            <ng-container matColumnDef="label">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.label }}</td>
+            </ng-container>
+            
+            <ng-container matColumnDef="comment">
+                <th mat-header-cell *matHeaderCellDef>Kommentar</th>
+                <td mat-cell *matCellDef="let element">{{ element.comment }}</td>
+            </ng-container>
+            
+            <ng-container matColumnDef="time">
+                <th mat-header-cell *matHeaderCellDef>Zeiten</th>
+                <td mat-cell *matCellDef="let element">
+                    <table>
+                        <tr>
+                            <td>
+                                Erstellt:
+                            </td>
+                            <td>
+                                {{ element.s3.queued | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Gestartet:
+                            </td>
+                            <td *ngIf="element.s3.started; else empty;">
+                                {{ element.s3.started | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                            <ng-template #empty>
+                                <td>
+                                    -
+                                </td>
+                            </ng-template>
+                        </tr>
+                        <tr>
+                            <td>
+                                Beendet:
+                            </td>
+                            <td *ngIf="element.s3.finished; else empty;">
+                                {{ element.s3.finished | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                            <ng-template #empty>
+                                <td>
+                                    -
+                                </td>
+                            </ng-template>
+                        </tr>
+                        <tr *ngIf="element.s3.errored">
+                            <td>
+                                Fehler:
+                            </td>
+                            <td>
+                                {{ element.s3.errored | date: 'dd.MM.YYYY HH:mm:ss' }} 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="error">
+                <th mat-header-cell *matHeaderCellDef>Fehler</th>
+                <td mat-cell *matCellDef="let element">
+                    <pre *ngIf="element.error; else empty;">{{ element.error }}</pre>
+                    <ng-template #empty>-</ng-template>
+                </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="status">
+                        <mat-icon class="queued" matTooltip="Erstellt" *ngIf="element.s3.queued && !element.s3.started">hourglass_empty</mat-icon>
+                        <mat-icon class="started" matTooltip="Gestartet" *ngIf="element.s3.started && !element.s3.finished && !element.s3.errored">downloading</mat-icon>
+                        <mat-icon class="finished" matTooltip="Beendet" *ngIf="element.s3.finished">check_circle</mat-icon>
+                        <mat-icon class="errored" matTooltip="Fehler" *ngIf="element.s3.errored">error</mat-icon>
+                    </div>
+                </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="action">
+                        <button mat-icon-button matTooltip="Liste aktualisieren" (click)="getPages(churchBook.country, churchBook.diocese, churchBook.community, churchBook.id)">
+                            <mat-icon>refresh</mat-icon>
+                        </button>
+                    </div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="action">
+                        <button mat-icon-button matTooltip="Page herunterladen" (click)="downloadPage(element)">
+                            <mat-icon>download</mat-icon>
+                        </button>
+
+                        <button mat-icon-button matTooltip="Page anschauen" (click)="viewPage(element)" *ngIf="element.s3.finished">
+                            <mat-icon>preview</mat-icon>
+                        </button>
+                        
+                        <button mat-icon-button matTooltip="Page speichern" (click)="savePage(element)" *ngIf="element.s3.finished">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="empty" *ngIf="pages.length == 0">
+            Keine Pages vorhanden
+
+            <button mat-stroked-button (click)="createParserJob(churchBook)">
+                <mat-icon>code</mat-icon>
+                Parser Job erstellen
+            </button>
+                        
+            <button mat-stroked-button (click)="getPages(churchBook.country, churchBook.diocese, churchBook.community, churchBook.id)">
+                <mat-icon>refresh</mat-icon>
+                Aktualisieren
+            </button>
+        </div>
+    </div>
+</div>

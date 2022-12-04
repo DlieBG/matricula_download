@@ -1,0 +1,16 @@
+
+version: '3'
+
+services:
+  frontend:
+    image: ghcr.io/dliebg/matricula_download/webapp/frontend:main
+    container_name: matricula_download_webapp_frontend
+    restart: unless-stopped
+    ports:
+      - 8069:80
+
+  backend:
+    image: ghcr.io/dliebg/matricula_download/webapp/backend:main
+    container_name: matricula_download_webapp_backend
+    restart: unless-stopped
+    env_file: .env

@@ -1,0 +1,17 @@
+h2 {
+    font-weight: 300;
+}
+
+.action {
+    float: right;
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.empty button {
+    margin-top: 1em;
+}

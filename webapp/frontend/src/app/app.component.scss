@@ -1,0 +1,28 @@
+.toolbar {
+    background-color: brown;
+    border-radius: 18px;
+    margin: 7px 7px 0 7px;
+    width: calc(100% - 14px);
+}
+
+button {
+    margin-right: .5em;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.footer {
+    position: fixed;
+    bottom: 6px;
+    right: 12px;
+}
+
+.footer span {
+    display: flex;
+}
+
+.copyright {
+    scale: .64;
+}
