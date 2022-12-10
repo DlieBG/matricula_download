@@ -14,7 +14,7 @@ export class CreateParserJobComponent implements OnInit {
     diocese_regex: '.*',
     community_regex: '.*',
     page_skip: true
-  }
+  };
 
   constructor(
     private parserJobService: ParserJobService,

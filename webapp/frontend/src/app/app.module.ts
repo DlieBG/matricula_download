@@ -32,6 +32,10 @@ import { ChurchBookListComponent } from './components/explorer/church-book-list/
 import { ChurchBookComponent } from './components/explorer/church-book/church-book.component';
 import { PageListComponent } from './components/explorer/page-list/page-list.component';
 import { PagePreviewComponent } from './components/explorer/page-preview/page-preview.component';
+import { ListDownloaderPageComponent } from './components/list-downloader/list-downloader-page/list-downloader-page.component';
+import { CreateListDownloaderComponent } from './components/list-downloader/create-list-downloader/create-list-downloader.component';
+import { ListDownloaderEntryComponent } from './components/list-downloader/list-downloader-entry/list-downloader-entry.component';
+import { AddListDownloaderPageComponent } from './components/list-downloader/add-list-downloader-page/add-list-downloader-page.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +55,10 @@ import { PagePreviewComponent } from './components/explorer/page-preview/page-pr
     ChurchBookComponent,
     PageListComponent,
     PagePreviewComponent,
+    ListDownloaderPageComponent,
+    CreateListDownloaderComponent,
+    ListDownloaderEntryComponent,
+    AddListDownloaderPageComponent,
   ],
   imports: [
     BrowserModule,

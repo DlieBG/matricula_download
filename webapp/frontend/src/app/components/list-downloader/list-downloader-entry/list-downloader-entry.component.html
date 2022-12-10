@@ -1,0 +1,32 @@
+<div class="body">
+    <ng-template #loading>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </ng-template>
+
+    <div *ngIf="list$ | async as list; else loading;">
+        <h1>
+            <button mat-icon-button [routerLink]="['/list-downloader']">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            List Downloader
+            <i>
+                {{ list.name }}
+            </i>
+            <button mat-icon-button class="refresh" (click)="getListDownloader(list._id)">
+                <mat-icon>refresh</mat-icon>
+            </button>
+        </h1>
+
+        <div class="pages">
+            <app-list-downloader-page [listDownloaderPage]="page" (stateFinishedChange)="stateFinishedChange" *ngFor="let page of list.pages;"></app-list-downloader-page>
+        </div>
+
+        <div class="action">
+            <button mat-stroked-button (click)="addListDownloaderPage()">
+                <mat-icon>add</mat-icon>
+                Hinzufügen
+            </button>
+        </div>
+    </div>
+</div>
+

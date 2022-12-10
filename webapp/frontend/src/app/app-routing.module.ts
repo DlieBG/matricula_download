@@ -6,6 +6,7 @@ import { CountryComponent } from './components/explorer/country/country.componen
 import { DioceseComponent } from './components/explorer/diocese/diocese.component';
 import { ExplorerComponent } from './components/explorer/explorer.component';
 import { HomeComponent } from './components/home/home.component';
+import { ListDownloaderEntryComponent } from './components/list-downloader/list-downloader-entry/list-downloader-entry.component';
 import { ListDownloaderComponent } from './components/list-downloader/list-downloader.component';
 import { ParserComponent } from './components/parser/parser.component';
 
@@ -19,7 +20,10 @@ const routes: Routes = [
     { path: ':countryId/:dioceseId/:communityId/:churchBookId', component: ChurchBookComponent },
   ] },
   { path: 'parser', component: ParserComponent },
-  { path: 'list-downloader', component: ListDownloaderComponent },
+  { path: 'list-downloader', children: [
+    { path: '', component: ListDownloaderComponent },
+    { path: ':_id', component: ListDownloaderEntryComponent }
+  ] }
 ];
 
 @NgModule({

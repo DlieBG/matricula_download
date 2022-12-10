@@ -1,3 +1,40 @@
 <div class="body">
-    Comming soon ;)
+    <h1>
+        List Downloader
+        <button mat-stroked-button (click)="createListDownloader()">
+            <mat-icon>add</mat-icon>
+            Erstellen
+        </button>
+    </h1>
+
+    <ng-template #loading>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </ng-template>
+
+    <div *ngIf="lists$ | async as lists; else loading;">
+        <table mat-table [dataSource]="lists">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+            
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="action">
+                        <button mat-icon-button matTooltip="List löschen" (click)="deleteListDownloader(element._id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        
+                        <button mat-icon-button matTooltip="List auswählen" [routerLink]="element._id">
+                            <mat-icon>arrow_forward_ios</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
 </div>
