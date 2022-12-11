@@ -37,14 +37,19 @@ export class ListDownloaderEntryComponent implements OnInit {
 
   }
 
-  addListDownloaderPage() {
-    this.dialog.open(AddListDownloaderPageComponent).afterClosed().subscribe({
+  addListDownloaderPage(list: ListDownloader) {
+    this.dialog.open(
+      AddListDownloaderPageComponent,
+      {
+        data: list.pages.length > 0 ? list.pages[list.pages.length - 1] : null
+      }
+    ).afterClosed().subscribe({
       next: (page: ListDownloaderPage) => {
         if(page)
-          this.list$.subscribe({
-            next: (list) => {
-              list.pages.push(page);
-              this.listDownloaderService.updateList(list._id, list).subscribe();
+          list.pages.push(page);
+          this.listDownloaderService.updateList(list._id, list).subscribe({
+            next: () => {
+              this.getListDownloader(list._id);
             }
           });
       }

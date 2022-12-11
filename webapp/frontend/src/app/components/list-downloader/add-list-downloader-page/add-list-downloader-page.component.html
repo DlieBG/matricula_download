@@ -1,1 +1,66 @@
-<p>add-list-downloader-page works!</p>
+<div class="body">
+    <h3>Page hinzufügen</h3>
+
+    <div class="wrapper">
+        <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <mat-select [(ngModel)]="page.country" (selectionChange)="countryChange()">
+                <mat-option *ngFor="let country of countries$ | async" [value]="country.id">
+                    {{ country.name }}
+                </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>public</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Diocese</mat-label>
+            <mat-select [disabled]="!dioceses$" [(ngModel)]="page.diocese" (selectionChange)="dioceseChange()">
+                <mat-option *ngFor="let diocese of dioceses$ | async" [value]="diocese.id">
+                    {{ diocese.name }}
+                </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>apartment</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Community</mat-label>
+            <mat-select [disabled]="!communities$" [(ngModel)]="page.community" (selectionChange)="communityChange()">
+                <mat-option *ngFor="let community of communities$ | async" [value]="community.id">
+                    {{ community.name }}
+                </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>church</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Church Book</mat-label>
+            <mat-select [disabled]="!churchBooks$" [(ngModel)]="page.church_book" (selectionChange)="churchBookChange()">
+                <mat-option *ngFor="let churchBook of churchBooks$ | async" [value]="churchBook.id">
+                    {{ churchBook.label }}
+                </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>menu_book</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Page</mat-label>
+            <mat-select [disabled]="!pages$" [(ngModel)]="page.page">
+                <mat-option *ngFor="let page of pages$ | async" [value]="page.id">
+                    {{ page.label }}
+                </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>description</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Dateiname</mat-label>
+            <input matInput placeholder="RIN XXX YYYY Vorname Nachname" [(ngModel)]="page.file_name">
+            <mat-icon matSuffix>edit</mat-icon>
+        </mat-form-field>
+
+        <button mat-stroked-button [disabled]="!isComplete()" (click)="add()">
+            <mat-icon>add</mat-icon>
+            Hinzufügen
+        </button>
+    </div>
+</div>

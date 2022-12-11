@@ -99,7 +99,9 @@ func UpdateList(c *fiber.Ctx) error {
 		bson.M{
 			"_id": id,
 		},
-		list,
+		bson.M{
+			"$set": list,
+		},
 	)
 	if err != nil {
 		return err

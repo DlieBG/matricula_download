@@ -13,6 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -76,6 +78,8 @@ import { AddListDownloaderPageComponent } from './components/list-downloader/add
     MatDialogModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
