@@ -38,6 +38,7 @@ import { ListDownloaderPageComponent } from './components/list-downloader/list-d
 import { CreateListDownloaderComponent } from './components/list-downloader/create-list-downloader/create-list-downloader.component';
 import { ListDownloaderEntryComponent } from './components/list-downloader/list-downloader-entry/list-downloader-entry.component';
 import { AddListDownloaderPageComponent } from './components/list-downloader/add-list-downloader-page/add-list-downloader-page.component';
+import { ChangeFileNameComponent } from './components/list-downloader/change-file-name/change-file-name.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { AddListDownloaderPageComponent } from './components/list-downloader/add
     CreateListDownloaderComponent,
     ListDownloaderEntryComponent,
     AddListDownloaderPageComponent,
+    ChangeFileNameComponent,
   ],
   imports: [
     BrowserModule,

@@ -18,13 +18,32 @@
         </h1>
 
         <div class="pages">
-            <app-list-downloader-page [listDownloaderPage]="page" (stateFinishedChange)="stateFinishedChange" *ngFor="let page of list.pages;"></app-list-downloader-page>
+            <app-list-downloader-page
+                [listDownloaderPage]="page"
+                [index]="index"
+                [downloadAll]="downloadAll$"
+                [saveAll]="saveAll$"
+                (stateFinishedChange)="stateFinishedChange($event)"
+                (fileNameChange)="changeFileName(list, $event)"
+                (pageDelete)="deletePage(list, $event)"
+                *ngFor="let page of list.pages; let index = index;"
+            ></app-list-downloader-page>
         </div>
 
         <div class="action">
             <button mat-stroked-button (click)="addListDownloaderPage(list)">
                 <mat-icon>add</mat-icon>
                 Hinzufügen
+            </button>
+
+            <button mat-stroked-button [disabled]="!notEmpty()" (click)="downloadAll()">
+                <mat-icon>download</mat-icon>
+                Alles herunterladen
+            </button>
+
+            <button mat-stroked-button [disabled]="!allFinished(list.pages)" (click)="saveAll()">
+                <mat-icon>save</mat-icon>
+                Alles speichern
             </button>
         </div>
     </div>

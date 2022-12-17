@@ -1,0 +1,16 @@
+<div class="body">
+    <h3>Dateiname ändern</h3>
+
+    <div class="wrapper">
+        <mat-form-field appearance="outline">
+            <mat-label>Dateiname</mat-label>
+            <input matInput placeholder="RIN XXX YYYY Vorname Nachname" [(ngModel)]="fileName">
+            <mat-icon matSuffix>edit</mat-icon>
+        </mat-form-field>
+
+        <button mat-stroked-button [disabled]="fileName == ''" (click)="save()">
+            <mat-icon>save</mat-icon>
+            Speichern
+        </button>
+    </div>
+</div>
