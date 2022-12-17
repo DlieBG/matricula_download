@@ -13,6 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +34,11 @@ import { ChurchBookListComponent } from './components/explorer/church-book-list/
 import { ChurchBookComponent } from './components/explorer/church-book/church-book.component';
 import { PageListComponent } from './components/explorer/page-list/page-list.component';
 import { PagePreviewComponent } from './components/explorer/page-preview/page-preview.component';
+import { ListDownloaderPageComponent } from './components/list-downloader/list-downloader-page/list-downloader-page.component';
+import { CreateListDownloaderComponent } from './components/list-downloader/create-list-downloader/create-list-downloader.component';
+import { ListDownloaderEntryComponent } from './components/list-downloader/list-downloader-entry/list-downloader-entry.component';
+import { AddListDownloaderPageComponent } from './components/list-downloader/add-list-downloader-page/add-list-downloader-page.component';
+import { ChangeFileNameComponent } from './components/list-downloader/change-file-name/change-file-name.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +58,11 @@ import { PagePreviewComponent } from './components/explorer/page-preview/page-pr
     ChurchBookComponent,
     PageListComponent,
     PagePreviewComponent,
+    ListDownloaderPageComponent,
+    CreateListDownloaderComponent,
+    ListDownloaderEntryComponent,
+    AddListDownloaderPageComponent,
+    ChangeFileNameComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +80,8 @@ import { PagePreviewComponent } from './components/explorer/page-preview/page-pr
     MatDialogModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

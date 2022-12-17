@@ -1,0 +1,47 @@
+.body {
+    margin: 1em;
+    border: 1px solid grey;
+    border-radius: 12px;
+    padding: 1em;
+    min-height: 64px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.details mat-icon {
+    margin-left: .25em;
+    margin-right: .25em;
+}
+
+.file-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.file-name mat-icon {
+    margin-left: .25em;
+    margin-right: .25em;
+}
+
+.status {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 1.5em;
+}
+
+.action {
+
+}

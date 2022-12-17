@@ -1,0 +1,64 @@
+<div class="body">
+    <ng-template #loading>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </ng-template>
+
+    <div class="wrapper" *ngIf="{
+            country: country$ | async,
+            diocese: diocese$ | async,
+            community: community$ | async,
+            churchBook: churchBook$ | async
+        } as data; else loading;">
+        <div>
+            <div class="details" *ngIf="data.country && data.diocese && data.community && data.churchBook && page">
+                <mat-icon>route</mat-icon>
+                {{ data.country.name }}
+                <mat-icon>chevron_right</mat-icon>
+                {{ data.diocese.name }}
+                <mat-icon>chevron_right</mat-icon>
+                {{ data.community.name }}
+                <mat-icon>chevron_right</mat-icon>
+                {{ data.churchBook.label }}
+                <mat-icon>chevron_right</mat-icon>
+                {{ page.label }}
+            </div>
+
+            <div class="file-name">
+                <mat-icon>badge</mat-icon>
+                {{ listDownloaderPage.file_name }}
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="status">
+                <mat-icon class="missing" matTooltip="Nicht heruntergeladen" *ngIf="!page.s3.queued">close</mat-icon>
+                <mat-icon class="queued" matTooltip="Erstellt" *ngIf="page.s3.queued && !page.s3.started">hourglass_empty</mat-icon>
+                <mat-icon class="started" matTooltip="Gestartet" *ngIf="page.s3.started && !page.s3.finished && !page.s3.errored">downloading</mat-icon>
+                <mat-icon class="finished" matTooltip="Beendet" *ngIf="page.s3.finished">check_circle</mat-icon>
+                <mat-icon class="errored" matTooltip="Fehler" *ngIf="page.s3.errored">error</mat-icon>
+            </div>
+
+            <div class="action">
+                <button mat-icon-button matTooltip="Page umbenennen" (click)="changeFileName()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Page entfernen" (click)="deletePage()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Page herunterladen" (click)="downloadPage(page)">
+                    <mat-icon>download</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Page anschauen" (click)="viewPage(page)" *ngIf="page.s3.finished">
+                    <mat-icon>preview</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Page speichern" (click)="savePage(page, listDownloaderPage.file_name)" *ngIf="page.s3.finished">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

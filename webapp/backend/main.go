@@ -28,6 +28,7 @@ func main() {
 	controllers.RegisterCommunityRoutes(app)
 	controllers.RegisterChurchBookRoutes(app)
 	controllers.RegisterPageRoutes(app)
+	controllers.RegisterListDownloaderRoutes(app)
 
 	app.Listen(":8060")
 }
